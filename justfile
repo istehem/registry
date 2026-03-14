@@ -3,17 +3,17 @@ DOCKER_REGISTRY := "192.168.132.170:5002"
 # catalog
 [group: 'registry']
 catalog:
-  curl -X GET {{DOCKER_REGISTRY}}/v2/_catalog | jq .
+  curl -X GET {{DOCKER_REGISTRY}}/v2/_catalog | jq
 
 # list tags for a repository
 [group: 'registry']
 list-tags REPO:
-  curl {{DOCKER_REGISTRY}}/v2/{{REPO}}/tags/list | jq '.'
+  curl {{DOCKER_REGISTRY}}/v2/{{REPO}}/tags/list | jq
 
-# list digests for the 'latest' tag in a repository
+# get the manifest for a repository and tag
 [group: 'registry']
-list-digests REPO:
-  curl -H "Accept: application/vnd.oci.image.manifest.v1+json" -I {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/latest
+manifest REPO TAG:
+  curl -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' {{DOCKER_REGISTRY}}/v2/axum-server/manifests/{{TAG}} | jq
 
 # remove a digest in a repository
 [group: 'registry']
