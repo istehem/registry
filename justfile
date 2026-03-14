@@ -3,19 +3,19 @@ DOCKER_REGISTRY := "192.168.132.170:5002"
 # catalog
 [group: 'registry']
 catalog:
-  curl -X GET http://192.168.132.170:5002/v2/_catalog | jq .
+  curl -X GET {{DOCKER_REGISTRY}}/v2/_catalog | jq .
 
-# list tags for the server image in the repository
+# list tags for a repository
 [group: 'registry']
 list-tags REPO:
   curl {{DOCKER_REGISTRY}}/v2/{{REPO}}/tags/list | jq '.'
 
-# list digests for the 'latest' tag for the server image in the repository
+# list digests for the 'latest' tag in a repository
 [group: 'registry']
 list-digests REPO:
   curl -H "Accept: application/vnd.oci.image.manifest.v1+json" -I {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/latest
 
-# remove a digest for the server image in the repository
+# remove a digest in a repository
 [group: 'registry']
 delete REPO DIGEST:
   curl -X DELETE {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{DIGEST}}
