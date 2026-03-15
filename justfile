@@ -13,7 +13,12 @@ list-tags REPO:
 # get the manifest for a repository and tag
 [group: 'registry']
 manifest REPO TAG:
-  curl -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' {{DOCKER_REGISTRY}}/v2/axum-server/manifests/{{TAG}} | jq
+  curl -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{TAG}} | jq
+
+# get the manifest for a repository and tag
+[group: 'registry']
+manifest-header REPO TAG:
+  curl -I -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{TAG}}
 
 # remove a digest in a repository
 [group: 'registry']
