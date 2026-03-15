@@ -15,7 +15,7 @@ list-tags REPO:
 manifest REPO TAG:
   curl -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{TAG}} | jq
 
-# get the manifest for a repository and tag
+# get the manifest header for a repository and tag
 [group: 'registry']
 manifest-header REPO TAG:
   curl -I -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{TAG}}
