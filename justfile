@@ -6,19 +6,23 @@ catalog:
   curl -X GET {{DOCKER_REGISTRY}}/v2/_catalog | jq
 
 # list tags for a repository
-[group: 'registry']
+[group: 'api']
 list-tags REPO:
-  curl {{DOCKER_REGISTRY}}/v2/{{REPO}}/tags/list | jq
+  curl -s {{DOCKER_REGISTRY}}/v2/{{REPO}}/tags/list | jq
 
 # get the manifest for a repository and tag
-[group: 'registry']
+[group: 'api']
 manifest REPO TAG:
-  curl -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{TAG}} | jq
+  curl -s -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{TAG}} | jq
 
 # get the manifest header for a repository and tag
-[group: 'registry']
+[group: 'api']
 manifest-header REPO TAG:
-  curl -I -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{TAG}}
+  curl -s -I -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{TAG}}
+
+[group: 'podman']
+garbage-collect:
+  podman exec registry_registry_1 registry garbage-collect /etc/distribution/config.yml
 
 # remove a digest in a repository
 [group: 'registry']
