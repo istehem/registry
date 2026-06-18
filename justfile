@@ -32,7 +32,7 @@ stop:
 
 # garbage collect the registry
 [group: 'podman']
-garbage-collect: start && stop
+garbage-collect: stop && start
   podman exec registry_registry_1 registry garbage-collect --delete-untagged /etc/distribution/config.yml
 
 # remove a digest in a repository
