@@ -20,12 +20,22 @@ manifest REPO TAG:
 manifest-header REPO TAG:
   curl -s -I -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{TAG}}
 
+# start the registry
 [group: 'podman']
-garbage-collect:
-  podman exec registry_registry_1 registry garbage-collect /etc/distribution/config.yml
+start:
+  podman start registry_registry_1
+
+# stop the registry
+[group: 'podman']
+stop:
+  podman stop registry_registry_1
+
+# garbage collect the registry
+[group: 'podman']
+garbage-collect: start && stop
+  podman exec registry_registry_1 registry garbage-collect --delete-untagged /etc/distribution/config.yml
 
 # remove a digest in a repository
 [group: 'registry']
-delete REPO DIGEST:
+delete REPO DIGEST: && garbage-collect
   curl -X DELETE {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{DIGEST}}
-  podman exec registry_registry_1 registry garbage-collect /etc/distribution/config.yml
