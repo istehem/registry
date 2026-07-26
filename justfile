@@ -20,6 +20,11 @@ manifest REPO TAG:
 manifest-header REPO TAG:
   curl -s -I -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{TAG}}
 
+# get the manifest for a platform given a repository and a digest
+[group: 'api']
+platform-manifest REPO DIGEST:
+  curl -s -H 'Accept: application/vnd.oci.image.manifest.v1+json' {{DOCKER_REGISTRY}}/v2/{{REPO}}/manifests/{{DIGEST}} | jq
+
 # garbage collect the registry
 [group: 'podman']
 garbage-collect:
